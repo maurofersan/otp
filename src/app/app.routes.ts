@@ -1,3 +1,10 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { OTP_ROUTES } from './features/otp.routes';
+
+export const routes: Routes = [
+  {
+    path: '',
+    children: OTP_ROUTES,
+  },
+];
