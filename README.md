@@ -1,27 +1,106 @@
-# Otp
+# OTP Microfrontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+This project demonstrates an **OTP Microfrontend (MFE)** integration
+with **Angular 17** and **Module Federation**.
 
-## Development server
+## Project Structure
 
-Run `npm run start` for a dev server. Navigate to `http://localhost:4201/`. The application will automatically reload if you change any of the source files.
+```plaintext
+mfe-otp/
+├── src/
+│   ├── app/
+│   │   ├── core/                # Global services of this MFE
+│   │   │   ├── interceptors/
+│   │   │   ├── guards/
+│   │   │   ├── services/
+│   │   │   │   ├── api.service.ts
+│   │   │   │   ├── text.service.ts   # Handles texts (API + fallback)
+│   │   │   │   └── ...
+│   │   │   └── core.module.ts
+│   │   │
+│   │   ├── features/            # Features/pages of the MFE
+│   │   │   └── otp/
+│   │   │       ├── components/
+│   │   │       ├── pages/
+│   │   │       │   ├── otp.page.ts
+│   │   │       │   └── otp.page.html
+│   │   │       ├── services/
+│   │   │       ├── store/       # Local state (ngrx or custom reducer)
+│   │   │       └── otp-entry.component.ts
+│   │   │       └── otp-entry.module.ts
+│   │   │       └── otp.routes.ts
+│   │   │
+│   │   ├── shared/              # Reusable components & pipes within this MFE
+│   │   │   ├── components/
+│   │   │   ├── directives/
+│   │   │   └── pipes/
+│   │   │
+│   │   ├── app.component.ts
+│   │   └── app.routes.ts
+│   │
+│   ├── assets/
+│   │   └── i18n/                # Fallback texts
+│   │       ├── es.json
+│   │       ├── en.json
+│   │       └── ...
+│   │
+│   ├── environments/            # Environment-specific configurations
+│   │   ├── environment.ts
+│   │   ├── environment.dev.ts
+│   │   └── environment.prod.ts
+│   │
+│   └── index.html
+│
+├── webpack.config.js  # MFE configuration
+├── tailwind.config.js           # (if using Tailwind)
+├── angular.json
+└── package.json
+```
 
-## Code scaffolding
+## Key Concepts
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### AppComponent (Standalone)
 
-## Build
+- Used only when running the MFE in isolation (`npm run start`).
+- Bootstraps the `AppComponent` directly.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### OtpComponent (Standalone Feature)
 
-## Running unit tests
+- Represents the actual feature UI (OTP flow).
+- Can be lazy-loaded or routed inside the `AppComponent` (in
+  isolation).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### OtpEntryModule / Module
 
-## Running end-to-end tests
+- Acts as the **remote entry point** exposed to the Shell via Module
+  Federation.
+- Shell loads this module, which internally lazy-loads or
+  renders `OtpComponent`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Shell Integration
 
-## Further help
+- In the Shell, configure the `remoteEntry.js` for this MFE.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Use routing like:
+
+  ```ts
+  {
+    path: 'otp',
+    loadChildren: () => loadRemoteModule({
+      type: 'module',
+      remoteEntry: 'http://localhost:4202/remoteEntry.js',
+      exposedModule: './Module',
+    }).then(m => m.OtpEntryModule)
+  }
+  ```
+
+## Best Practices
+
+- Always expose an **Entry Module/Component**
+  (`OtpEntryModule`) for Shell integration, not the
+  `AppModule`.
+- Keep `AppComponent` and isolation setup separate from Shell
+  integration.
+- Use clear naming like `xxx-entry` for remote entry points.
+
+---
