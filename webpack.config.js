@@ -33,6 +33,12 @@ module.exports = {
         "./Module": "./src/app/features/otp-entry.module.ts",
       },
       shared: share({
+        "stencil-library": {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: "^0.1.47",
+          eager: true,
+        },
         "@angular/core": {
           singleton: true,
           strictVersion: true,
@@ -53,7 +59,6 @@ module.exports = {
           strictVersion: true,
           requiredVersion: "auto",
         },
-
         ...sharedMappings.getDescriptors(),
       }),
     }),
