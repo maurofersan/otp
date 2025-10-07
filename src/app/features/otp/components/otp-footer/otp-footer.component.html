@@ -1,0 +1,11 @@
+<footer class="otp-footer">
+  <std-button
+    class="otp-footer__continue-btn"
+    [class.otp-footer__continue-btn--disabled]="!isEnabled || isLoading"
+    [disabled]="!isEnabled || isLoading"
+    (click)="onContinueClick()"
+    [label]="continueButtonText"
+    isLoading
+    appStdButton
+  />
+</footer>

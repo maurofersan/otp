@@ -1,0 +1,10 @@
+<nav class="otp-navigation">
+  <button
+    class="otp-navigation__back-btn"
+    (click)="onBackClick()"
+    [disabled]="disabled"
+  >
+    <span class="otp-navigation__back-btn__icon">←</span>
+    <span class="otp-navigation__back-btn__text">{{ backButtonText }}</span>
+  </button>
+</nav>

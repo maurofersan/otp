@@ -1,0 +1,35 @@
+<section class="otp-card">
+  <div class="otp-card__header">
+    <h2 class="otp-card__header__title">{{ title }}</h2>
+    <div class="otp-card__header__contact">
+      <span class="otp-card__header__contact__icon">{{ contactIcon }}</span>
+      <span class="otp-card__header__contact__text">
+        {{ sentToText }} {{ maskedContact }}
+      </span>
+    </div>
+  </div>
+
+  <div class="otp-card__input">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="otp-card__resend">
+    <p class="otp-card__resend__text">
+      @if (resendCountdown > 0) {
+      {{ resendText }}
+      <span class="otp-card__resend__countdown">
+        {{ resendCountdown }}{{ resendSecondsText }}
+      </span>
+      }
+    </p>
+    @if (resendCountdown === 0) {
+    <button
+      class="otp-card__resend__btn"
+      [disabled]="resendCountdown > 0 || isLoading"
+      (click)="onResendClick()"
+    >
+      {{ resendLink }}
+    </button>
+    }
+  </div>
+</section>

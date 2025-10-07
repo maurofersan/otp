@@ -1,0 +1,41 @@
+.otp-navigation {
+  padding: 12px 20px;
+  background-color: #ffffff;
+
+  &__back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #6c757d;
+    transition: color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      color: #dc3545;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &__icon {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &__text {
+      font-weight: 500;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .otp-navigation {
+    background-color: #2d2d2d;
+  }
+}

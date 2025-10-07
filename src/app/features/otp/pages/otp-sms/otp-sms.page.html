@@ -1,4 +1,47 @@
-<h1>Otp SMS Flow</h1>
-<div>
-  <std-pin-input />
+<div class="otp-sms">
+  <app-otp-navigation
+    [backButtonText]="getText('otp.common.backButton')"
+    (backClick)="goBack()"
+  >
+  </app-otp-navigation>
+
+  <main class="otp-sms__main">
+    <app-otp-title-section
+      [titlePrefix]="getText('otp.sms.title.prefix')"
+      [titleHighlight]="getText('otp.sms.title.highlight')"
+      [subtitle]="getText('otp.sms.subtitle')"
+    >
+    </app-otp-title-section>
+
+    <app-otp-card
+      [title]="getText('otp.sms.inputTitle')"
+      [contactIcon]="'📱'"
+      [sentToText]="getText('otp.sms.sentTo')"
+      [maskedContact]="maskedPhoneNumber"
+      [resendText]="getText('otp.sms.resendText')"
+      [resendSecondsText]="getText('otp.sms.resendSeconds')"
+      [resendLink]="getText('otp.email.resendLink')"
+      [resendCountdown]="resendCountdown"
+      [isLoading]="isLoading"
+      (resendClick)="resendCode()"
+    >
+      <std-pin-input
+        [itemsNumber]="6"
+        [disabled]="isLoading"
+        (changeEvent)="onPinChange($event)"
+        appPinInput
+      >
+      </std-pin-input>
+    </app-otp-card>
+  </main>
+
+  <app-otp-footer
+    [isEnabled]="isPinComplete"
+    [isLoading]="isLoading"
+    [continueButtonText]="getText('otp.sms.continueButton')"
+    (continueClick)="verifyCode()"
+  >
+  </app-otp-footer>
+
+  <app-error-message [message]="errorMessage" (dismiss)="clearError()" />
 </div>
