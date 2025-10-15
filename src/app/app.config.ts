@@ -6,6 +6,10 @@ import { routes } from './app.routes';
 import { TextService } from './core/services/text.service';
 import { ApiService } from './core/services/api.service';
 
+/**
+ * Application configuration for the OTP microfrontend.
+ * Provides routing, HTTP client, and core services.
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),

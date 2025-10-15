@@ -1,6 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * Reusable loading spinner component.
+ * Displays an animated spinner with optional text.
+ *
+ * @example
+ * ```html
+ * <app-loading-spinner
+ *   [size]="'small'"
+ *   [text]="'Loading...'">
+ * </app-loading-spinner>
+ * ```
+ */
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
@@ -67,6 +79,9 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class LoadingSpinnerComponent {
+  /** Size of the spinner */
   @Input() size: 'small' | 'medium' = 'medium';
+
+  /** Optional text to display below the spinner */
   @Input() text: string = '';
 }

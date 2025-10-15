@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 
 import { TextService } from './core/services/text.service';
 
+/**
+ * Root component of the OTP microfrontend application.
+ * Initializes the text service with Spanish language as default.
+ */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -12,8 +16,16 @@ import { TextService } from './core/services/text.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  constructor(private textService: TextService) {}
+  /**
+   * Creates an instance of AppComponent
+   * @param textService - Service for managing internationalization texts
+   */
+  constructor(private readonly textService: TextService) {}
 
+  /**
+   * Angular lifecycle hook - initializes the application
+   * Loads Spanish texts as default language
+   */
   ngOnInit(): void {
     this.textService.loadTexts('es').subscribe();
   }

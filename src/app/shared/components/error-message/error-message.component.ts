@@ -1,6 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * Reusable error message component.
+ * Displays error messages with optional dismiss functionality.
+ *
+ * @example
+ * ```html
+ * <app-error-message
+ *   [message]="errorMessage"
+ *   [dismissible]="true"
+ *   (dismiss)="clearError()">
+ * </app-error-message>
+ * ```
+ */
 @Component({
   selector: 'app-error-message',
   standalone: true,
@@ -70,10 +83,21 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ErrorMessageComponent {
+  /** Error message to display */
   @Input() message: string = '';
+
+  /** Whether the error message can be dismissed */
   @Input() dismissible: boolean = true;
 
+  /** Event emitted when dismiss button is clicked */
+  @Output() dismiss = new EventEmitter<void>();
+
+  /**
+   * Handles dismiss button click
+   * Clears the message and emits dismiss event
+   */
   onDismiss(): void {
     this.message = '';
+    this.dismiss.emit();
   }
 }

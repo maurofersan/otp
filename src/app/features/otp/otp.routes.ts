@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
+/**
+ * OTP feature routes configuration.
+ * Defines lazy-loaded routes for SMS and Email OTP pages.
+ */
 export const otpRoutes: Routes = [
   {
     path: 'sms',
