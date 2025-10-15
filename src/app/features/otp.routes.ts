@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
+/**
+ * OTP routes configuration for microfrontend integration.
+ * Defines lazy-loaded routes for SMS and Email OTP pages.
+ */
 export const OTP_ROUTES: Routes = [
   {
     path: '',

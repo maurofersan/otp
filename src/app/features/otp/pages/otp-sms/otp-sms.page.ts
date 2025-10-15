@@ -45,22 +45,22 @@ export class OtpSmsPageComponent extends BaseComponent implements OnInit {
   maskedPhoneNumber = '*** *** 194';
   currentPin = '';
 
-  private resendTimer$ = timer(1000, 1000);
+  private _resendTimer$ = timer(1000, 1000);
 
-  private textService = inject(TextService);
-  private apiService = inject(ApiService);
-  private router = inject(Router);
+  private _textService = inject(TextService);
+  private _apiService = inject(ApiService);
+  private _router = inject(Router);
 
   ngOnInit(): void {
     console.log('init sms::');
-    this.startResendCountdown();
+    this._startResendCountdown();
   }
 
   /**
    * Gets text by key with fallback support
    */
   getText(key: string, params?: { [key: string]: string | number }): string {
-    return this.textService.getText(key, params);
+    return this._textService.getText(key, params);
   }
 
   /**
@@ -90,7 +90,7 @@ export class OtpSmsPageComponent extends BaseComponent implements OnInit {
       type: 'sms',
     };
 
-    this.router.navigate(['/otp/email']);
+    this._router.navigate(['/otp/email']);
     // this.apiService
     //   .verifyOtp(request)
     //   .pipe(takeUntil(this.destroy$))
@@ -99,7 +99,7 @@ export class OtpSmsPageComponent extends BaseComponent implements OnInit {
     //       console.log('OTP verification response:', response);
     //       if (response?.success) {
     //         // Navigate to email OTP page
-    //         this.router.navigate(['/otp/email']);
+    //         this._router.navigate(['/otp/email']);
     //       } else {
     //         this.errorMessage = this.getText('otp.common.invalidCode');
     //       }
@@ -149,14 +149,14 @@ export class OtpSmsPageComponent extends BaseComponent implements OnInit {
    * Navigates back to previous page
    */
   goBack(): void {
-    this.router.navigate(['/']);
+    this._router.navigate(['/']);
   }
 
   /**
    * Starts the resend countdown timer
    */
-  private startResendCountdown(): void {
-    this.resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+  private _startResendCountdown(): void {
+    this._resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.resendCountdown > 0) {
         this.resendCountdown--;
       }

@@ -45,22 +45,22 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
   maskedEmailAddress = '*******sa64@**...';
   currentPin = '';
 
-  private resendTimer$ = timer(1000, 1000);
+  private _resendTimer$ = timer(1000, 1000);
 
-  private textService = inject(TextService);
-  private apiService = inject(ApiService);
-  private router = inject(Router);
+  private _textService = inject(TextService);
+  private _apiService = inject(ApiService);
+  private _router = inject(Router);
 
   ngOnInit(): void {
     console.log('init:::');
-    this.startResendCountdown();
+    this._startResendCountdown();
   }
 
   /**
    * Gets text by key with fallback support
    */
   getText(key: string, params?: { [key: string]: string | number }): string {
-    return this.textService.getText(key, params);
+    return this._textService.getText(key, params);
   }
 
   /**
@@ -147,14 +147,14 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
    * Navigates back to SMS OTP page
    */
   goBack(): void {
-    this.router.navigate(['/otp/sms']);
+    this._router.navigate(['/otp/sms']);
   }
 
   /**
    * Starts the resend countdown timer
    */
-  private startResendCountdown(): void {
-    this.resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+  private _startResendCountdown(): void {
+    this._resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.resendCountdown > 0) {
         this.resendCountdown--;
       }
