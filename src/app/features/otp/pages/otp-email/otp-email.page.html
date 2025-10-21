@@ -24,11 +24,14 @@
       [resendLink]="getText('otp.email.resendLink')"
       [resendCountdown]="resendCountdown"
       [isLoading]="isLoading"
+      [hasError]="hasError"
+      [errorMessage]="errorMessage"
       (resendClick)="resendCode()"
     >
       <std-pin-input
         [itemsNumber]="6"
         [disabled]="isLoading"
+        [status]="hasError ? 'error' : 'default'"
         (changeEvent)="onPinChange($event)"
         appPinInput
       >
@@ -37,7 +40,7 @@
   </main>
 
   <app-otp-footer
-    [isEnabled]="isPinComplete"
+    [isEnabled]="isCodeValid && isPinComplete"
     [isLoading]="isLoading"
     [continueButtonText]="getText('otp.email.continueButton')"
     (continueClick)="verifyCode()"

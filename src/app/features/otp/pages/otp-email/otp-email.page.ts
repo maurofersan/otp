@@ -44,6 +44,8 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
   resendCountdown = 30;
   maskedEmailAddress = '*******sa64@**...';
   currentPin = '';
+  hasError = false;
+  isCodeValid = false;
 
   private _resendTimer$ = timer(1000, 1000);
 
@@ -71,44 +73,60 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this.currentPin = pin;
     this.isPinComplete = pin.length === 6;
     console.log('Email Pin changed:', pin, 'isComplete:', this.isPinComplete);
-    this.clearError();
+    
+    // Si el PIN está completo, validar automáticamente
+    if (this.isPinComplete) {
+      this.validatePin();
+    } else {
+      // Limpiar error cuando el usuario empiece a escribir un nuevo código
+      this.clearError();
+      this.isCodeValid = false; // Deshabilitar botón mientras se escribe
+    }
   }
 
   /**
-   * Verifies the entered OTP code
+   * Validates the PIN automatically when complete
    */
-  verifyCode(): void {
+  validatePin(): void {
     if (!this.isPinComplete || this.isLoading) {
       return;
     }
 
     this.isLoading = true;
     this.clearError();
+    this.isCodeValid = false; // Deshabilitar botón durante validación
 
-    const request: OtpVerificationRequest = {
-      code: this.currentPin,
-      type: 'email',
-    };
+    // Simular validación con datos dummy
+    setTimeout(() => {
+      if (this.currentPin === '123456') {
+        // Código válido - habilitar botón y navegar
+        this.isCodeValid = true;
+        this._router.navigate(['/success']); // Navegar a página de éxito
+      } else {
+        // Código inválido - mostrar error y mantener botón deshabilitado
+        this.hasError = true;
+        this.errorMessage = 'El código es incorrecto';
+        this.isCodeValid = false;
+      }
+      this.isLoading = false;
+    }, 500);
+  }
 
-    // this.apiService
-    //   .verifyOtp(request)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: (response) => {
-    //       console.log('Email OTP verification response:', response);
-    //       if (response?.success) {
-    //         this.router.navigate(['/success']);
-    //       } else {
-    //         this.errorMessage = this.getText('otp.common.invalidCode');
-    //       }
-    //       this.isLoading = false;
-    //     },
-    //     error: (error) => {
-    //       console.error('Email OTP verification error:', error);
-    //       this.errorMessage = this.getText('otp.common.error');
-    //       this.isLoading = false;
-    //     },
-    //   });
+  /**
+   * Verifies the entered OTP code (called by button click)
+   */
+  verifyCode(): void {
+    if (!this.isPinComplete || this.isLoading || !this.isCodeValid) {
+      return;
+    }
+
+    // Si el código ya es válido, navegar directamente
+    if (this.currentPin === '123456') {
+      this._router.navigate(['/success']);
+    } else {
+      // Si no es válido, validar nuevamente
+      this.validatePin();
+    }
   }
 
   /**
@@ -166,5 +184,7 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
    */
   clearError(): void {
     this.errorMessage = '';
+    this.hasError = false;
+    this.isCodeValid = false; // Deshabilitar botón al limpiar error
   }
 }
