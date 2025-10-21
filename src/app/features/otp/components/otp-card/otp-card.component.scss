@@ -41,6 +41,26 @@
     margin: 16px 0;
   }
 
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 12px 0;
+    padding: 0;
+
+    &__icon {
+      font-size: 16px;
+      color: #dc2626;
+    }
+
+    &__message {
+      color: #dc2626;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
   &__resend {
     text-align: center;
 

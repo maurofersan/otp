@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Estilos para el componente std-pin-input */
+.border-error {
+  border-color: #dc2626 !important;
+}
+
+.focus\:border-error:focus {
+  border-color: #dc2626 !important;
+}
+
+.focus\:ring-error:focus {
+  --tw-ring-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* Estilos específicos para std-pin-input en estado de error */
+std-pin-input[status="error"] {
+  --border-color: #dc2626;
+  --focus-border-color: #dc2626;
+  --focus-ring-color: rgba(220, 38, 38, 0.1);
+}
+
+std-pin-input[status="error"] input {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 1px #dc2626 !important;
+}
+
+std-pin-input[status="error"] input:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}

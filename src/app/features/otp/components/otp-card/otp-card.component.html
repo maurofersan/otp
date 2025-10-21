@@ -13,6 +13,13 @@
     <ng-content></ng-content>
   </div>
 
+  @if (hasError && errorMessage) {
+  <div class="otp-card__error">
+    <div class="otp-card__error__icon">⚠</div>
+    <div class="otp-card__error__message">{{ errorMessage }}</div>
+  </div>
+  }
+
   <div class="otp-card__resend">
     <p class="otp-card__resend__text">
       @if (resendCountdown > 0) {

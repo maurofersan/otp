@@ -52,6 +52,12 @@ export class OtpCardComponent {
   /** Whether the component is in loading state */
   @Input() isLoading: boolean = false;
 
+  /** Whether there is an error state */
+  @Input() hasError: boolean = false;
+
+  /** Error message to display */
+  @Input() errorMessage: string = '';
+
   /** Event emitted when resend button is clicked */
   @Output() resendClick = new EventEmitter<void>();
 
