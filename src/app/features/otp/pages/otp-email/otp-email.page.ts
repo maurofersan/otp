@@ -46,6 +46,7 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
   currentPin = '';
   hasError = false;
   isCodeValid = false;
+  isCodeExpired = false;
 
   private _resendTimer$ = timer(1000, 1000);
 
@@ -73,6 +74,11 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this.currentPin = pin;
     this.isPinComplete = pin.length === 6;
     console.log('Email Pin changed:', pin, 'isComplete:', this.isPinComplete);
+    
+    // Si el código ha expirado, no permitir validación
+    if (this.isCodeExpired) {
+      return;
+    }
     
     // Si el PIN está completo, validar automáticamente
     if (this.isPinComplete) {
@@ -175,8 +181,29 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this._resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.resendCountdown > 0) {
         this.resendCountdown--;
+      } else if (this.resendCountdown === 0 && !this.isCodeExpired) {
+        // Cuando el countdown llega a 0, mostrar error de expiración
+        this.handleCodeExpiration();
       }
     });
+  }
+
+  /**
+   * Handles code expiration when countdown reaches 0
+   */
+  private handleCodeExpiration(): void {
+    this.isCodeExpired = true;
+    this.hasError = true;
+    this.errorMessage = 'Este código ha expirado. Te hemos enviado uno nuevo.';
+    this.isCodeValid = false; // Deshabilitar botón
+    this.isPinComplete = false; // Resetear estado del PIN
+    
+    // Reiniciar el countdown después de 5 segundos
+    setTimeout(() => {
+      this.resendCountdown = 30;
+      this.isCodeExpired = false;
+      this.clearError();
+    }, 5000);
   }
 
   /**

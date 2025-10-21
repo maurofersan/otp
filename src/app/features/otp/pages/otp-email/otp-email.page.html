@@ -30,8 +30,9 @@
     >
       <std-pin-input
         [itemsNumber]="6"
-        [disabled]="isLoading"
+        [disabled]="isLoading || isCodeExpired"
         [status]="hasError ? 'error' : 'default'"
+        [customLabel]="true"
         (changeEvent)="onPinChange($event)"
         appPinInput
       >
@@ -47,5 +48,5 @@
   >
   </app-otp-footer>
 
-  <app-error-message [message]="errorMessage" (dismiss)="clearError()" />
+  <app-error-message  (dismiss)="clearError()" />
 </div>

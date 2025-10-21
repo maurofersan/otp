@@ -14,7 +14,6 @@
     </app-otp-title-section>
 
     <app-otp-card
-      [title]="getText('otp.sms.inputTitle')"
       [contactIcon]="'📱'"
       [sentToText]="getText('otp.sms.sentTo')"
       [maskedContact]="maskedPhoneNumber"
@@ -31,6 +30,7 @@
         [itemsNumber]="6"
         [disabled]="isLoading"
         [status]="hasError ? 'error' : 'default'"
+        [customLabel]="true"
         (changeEvent)="onPinChange($event)"
         appPinInput
       >
