@@ -76,11 +76,6 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this.isPinComplete = pin.length === 6;
     console.log('Email Pin changed:', pin, 'isComplete:', this.isPinComplete);
     
-    // Si el código ha expirado, no permitir validación
-    if (this.isCodeExpired) {
-      return;
-    }
-    
     // Si el PIN está completo, validar automáticamente
     if (this.isPinComplete) {
       this.validatePin();
@@ -210,8 +205,7 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this.hasError = true;
     this.errorMessage = 'Este código ha expirado. Te hemos enviado uno nuevo.';
     this.isCodeValid = false; // Deshabilitar botón
-    this.isPinComplete = false; // Resetear estado del PIN
-    this.currentPin = ''; // Limpiar el PIN actual
+    // No resetear el PIN para permitir que el usuario siga escribiendo
   }
 
   /**

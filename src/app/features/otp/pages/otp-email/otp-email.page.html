@@ -31,7 +31,7 @@
     >
       <std-pin-input
         [itemsNumber]="6"
-        [disabled]="isLoading || isCodeExpired"
+        [disabled]="isLoading"
         [status]="hasError ? 'error' : 'default'"
         [customLabel]="true"
         (changeEvent)="onPinChange($event)"
