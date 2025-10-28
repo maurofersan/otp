@@ -58,15 +58,18 @@ export class OtpCardComponent {
   /** Error message to display */
   @Input() errorMessage: string = '';
 
+  /** Whether to show the resend link */
+  @Input() showResendLink: boolean = false;
+
   /** Event emitted when resend button is clicked */
   @Output() resendClick = new EventEmitter<void>();
 
   /**
    * Handles resend button click
-   * Only emits event if countdown is 0 and not loading
+   * Only emits event if showResendLink is true and not loading
    */
   onResendClick(): void {
-    if (this.resendCountdown === 0 && !this.isLoading) {
+    if (this.showResendLink && !this.isLoading) {
       this.resendClick.emit();
     }
   }

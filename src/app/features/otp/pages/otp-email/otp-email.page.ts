@@ -47,6 +47,7 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
   hasError = false;
   isCodeValid = false;
   isCodeExpired = false;
+  showResendLink = false; // Controla si mostrar el enlace "Volver a solicitar código"
 
   private _resendTimer$ = timer(1000, 1000);
 
@@ -139,12 +140,22 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
    * Resends the OTP code
    */
   resendCode(): void {
-    if (this.resendCountdown > 0 || this.isLoading) {
+    if (!this.showResendLink || this.isLoading) {
       return;
     }
 
     this.isLoading = true;
-    this.clearError();
+    // No limpiar el error aquí, ya que el mensaje de expiración debe permanecer visible
+
+    // Simular envío de nuevo código
+    setTimeout(() => {
+      this.isLoading = false;
+      // Reiniciar el countdown
+      this.resendCountdown = 30;
+      this.showResendLink = false;
+      this.isCodeExpired = false;
+      this.clearError();
+    }, 2000);
 
     // this.apiService
     //   .resendOtp('email')
@@ -153,7 +164,9 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     //     next: (response) => {
     //       if (response?.success) {
     //         this.resendCountdown = 30;
-    //         this.startResendCountdown();
+    //         this.showResendLink = false;
+    //         this.isCodeExpired = false;
+    //         this.clearError();
     //       } else {
     //         this.errorMessage = this.getText('otp.common.error');
     //       }
@@ -181,9 +194,10 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this._resendTimer$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.resendCountdown > 0) {
         this.resendCountdown--;
-      } else if (this.resendCountdown === 0 && !this.isCodeExpired) {
-        // Cuando el countdown llega a 0, mostrar error de expiración
+      } else if (this.resendCountdown === 0 && !this.showResendLink) {
+        // Cuando el countdown llega a 0, mostrar el mensaje de expiración y el enlace
         this.handleCodeExpiration();
+        this.showResendLink = true;
       }
     });
   }
@@ -197,13 +211,7 @@ export class OtpEmailPageComponent extends BaseComponent implements OnInit {
     this.errorMessage = 'Este código ha expirado. Te hemos enviado uno nuevo.';
     this.isCodeValid = false; // Deshabilitar botón
     this.isPinComplete = false; // Resetear estado del PIN
-    
-    // Reiniciar el countdown después de 5 segundos
-    setTimeout(() => {
-      this.resendCountdown = 30;
-      this.isCodeExpired = false;
-      this.clearError();
-    }, 5000);
+    this.currentPin = ''; // Limpiar el PIN actual
   }
 
   /**

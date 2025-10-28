@@ -29,10 +29,10 @@
       </span>
       }
     </p>
-    @if (resendCountdown === 0) {
+    @if (showResendLink) {
     <button
       class="otp-card__resend__btn"
-      [disabled]="resendCountdown > 0 || isLoading"
+      [disabled]="isLoading"
       (click)="onResendClick()"
     >
       {{ resendLink }}
